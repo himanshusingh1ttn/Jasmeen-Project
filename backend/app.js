@@ -10,6 +10,7 @@ const profileRoute = require('./routes/profile');
 const feedRoute = require('./routes/feed');
 const fileUpload = require('express-fileupload')
 const app = express(); // this represents our application
+const path = require("path");
 
 app.use(cors())
 app.use(express.json()); // enable parsing up in the json objects in the body of the request
@@ -24,6 +25,13 @@ app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/profile', profileRoute);
 app.use('/api/feed', feedRoute);
+
+
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+})
 
 // app.get('/', (req,res) => {
 //     res.status(200).send('Welcome to the Login and SignUp API')
